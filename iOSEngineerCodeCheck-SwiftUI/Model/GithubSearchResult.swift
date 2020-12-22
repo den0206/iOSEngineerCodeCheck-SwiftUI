@@ -32,8 +32,6 @@ struct Repositry : Codable,Identifiable{
         case issuesCount = "open_issues_count"
     }
     
-    
-    
 }
 
 struct Owner: Codable {

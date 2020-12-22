@@ -85,4 +85,15 @@ final class SearchViewModel : ObservableObject {
         task.resume()
     }
     
+    //MARK: - Pagination
+    
+    func readMore() {
+        
+        guard !reachLast else {return}
+        
+        /// pagenationの為の加算
+        currentPage += 1
+        searchRepositry()
+    }
+    
 }

@@ -19,11 +19,11 @@ struct SearchView: View {
                 SearchBar(searchText: $vm.searchWord)
                     .autocapitalization(.none)
                     .padding(.top,7)
-                    .onChange(of: vm.searchWord, perform: { text in
+                    .onChange(of: vm.searchWord, perform: { _ in
                         /// Call API
                         vm.sendRequest()
                         
-                        if text == "" {
+                        if vm.searchWord == "" {
                             vm.resetSearch()
                         }
                     })
@@ -32,7 +32,16 @@ struct SearchView: View {
                     ForEach(0 ..< vm.repositries.count, id : \.self) { i in
                         
                         /// Repositry Cell
-                        RepositryCell(repo: vm.repositries[i])
+                        
+                        if i != self.vm.repositries.count - 1 {
+                            RepositryCell(repo: vm.repositries[i])
+                        } else {
+                            RepositryCell(repo: vm.repositries[i])
+                                .onAppear {
+                                    /// pagination
+                                    vm.readMore()
+                                }
+                        }
                     }
                 }
                 
@@ -53,12 +62,15 @@ struct RepositryCell : View  {
     
     var body: some View {
         VStack(alignment: .leading){
+            Spacer()
+            
             Text(repo.fullName)
                 .font(.system(size: 14))
                 .foregroundColor(.primary)
             
+            Spacer()
             Divider()
-        }
+        }.frame(height: 60)
     }
 }
 
