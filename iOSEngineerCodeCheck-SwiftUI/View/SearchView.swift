@@ -20,16 +20,44 @@ struct SearchView: View {
                     .autocapitalization(.none)
                     .padding(.top,7)
                     .onChange(of: vm.searchWord, perform: { text in
+                        /// Call API
+                        vm.sendRequest()
                         
-                        print(text)
+                        if text == "" {
+                            vm.resetSearch()
+                        }
                     })
+                
+                LazyVStack {
+                    ForEach(0 ..< vm.repositries.count, id : \.self) { i in
+                        
+                        /// Repositry Cell
+                        RepositryCell(repo: vm.repositries[i])
+                    }
+                }
                 
                 
             }
-            .padding(.top,12)
+            .padding(.horizontal,12)
             
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+//MARK: - Repositry Cell
+
+struct RepositryCell : View  {
+    var repo : Repositry
+    
+    var body: some View {
+        VStack(alignment: .leading){
+            Text(repo.fullName)
+                .font(.system(size: 14))
+                .foregroundColor(.primary)
+            
+            Divider()
         }
     }
 }
