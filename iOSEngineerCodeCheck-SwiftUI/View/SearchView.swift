@@ -18,7 +18,7 @@ struct SearchView: View {
                 
                 ScrollView {
                     
-                    // Search Bar
+                    /// Search Bar
                     
                     SearchBar(searchText: $vm.searchWord)
                         .autocapitalization(.none)
@@ -64,11 +64,13 @@ struct SearchView: View {
                 }
                 .padding(.horizontal,12)
             }
-        
+         
             
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
         }
+       
+        
     }
 }
 

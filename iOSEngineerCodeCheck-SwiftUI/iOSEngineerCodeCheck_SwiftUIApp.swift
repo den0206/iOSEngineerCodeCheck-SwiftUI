@@ -11,7 +11,7 @@ import SwiftUI
 struct iOSEngineerCodeCheck_SwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            /// root
+            /// Root
            SearchView()
         }
     }
