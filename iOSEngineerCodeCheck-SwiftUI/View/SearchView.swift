@@ -14,40 +14,57 @@ struct SearchView: View {
     var body: some View {
        
         NavigationView {
-            
-            ScrollView {
-                SearchBar(searchText: $vm.searchWord)
-                    .autocapitalization(.none)
-                    .padding(.top,7)
-                    .onChange(of: vm.searchWord, perform: { _ in
-                        /// Call API
-                        vm.sendRequest()
-                        
-                        if vm.searchWord == "" {
-                            vm.resetSearch()
-                        }
-                    })
+            GeometryReader { geo in
                 
-                LazyVStack {
-                    ForEach(0 ..< vm.repositries.count, id : \.self) { i in
-                        
-                        /// Repositry Cell
-                        
-                        if i != self.vm.repositries.count - 1 {
-                            RepositryCell(repo: vm.repositries[i])
-                        } else {
-                            RepositryCell(repo: vm.repositries[i])
-                                .onAppear {
-                                    /// pagination
-                                    vm.readMore()
-                                }
+                ScrollView {
+                    
+                    // Search Bar
+                    
+                    SearchBar(searchText: $vm.searchWord)
+                        .autocapitalization(.none)
+                        .padding(.top,7)
+                        .onChange(of: vm.searchWord, perform: { _ in
+                            /// Call API
+                            vm.sendRequest()
+                            
+                            if vm.searchWord == "" {
+                                vm.resetSearch()
+                            }
+                        })
+                    
+                    /// Search Result
+
+                    switch vm.repositries.count {
+                    
+                    case 0 :
+                        Text("検索結果がありません").frame(width: geo.size.width, height: geo.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                    default:
+                        LazyVStack {
+                            ForEach(0 ..< vm.repositries.count, id : \.self) { i in
+                                
+                                NavigationLink(
+                                    destination: DetailView(repo: vm.repositries[i]),
+                                    label: {
+                                        
+                                        /// Repositry Cell
+                                        if i != self.vm.repositries.count - 1 {
+                                            RepositryCell(repo: vm.repositries[i])
+                                        } else {
+                                            RepositryCell(repo: vm.repositries[i])
+                                                .onAppear {
+                                                    /// pagination
+                                                    vm.readMore()
+                                                }
+                                        }
+                                    })
+                            }
                         }
                     }
+                
                 }
-                
-                
+                .padding(.horizontal,12)
             }
-            .padding(.horizontal,12)
+        
             
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
