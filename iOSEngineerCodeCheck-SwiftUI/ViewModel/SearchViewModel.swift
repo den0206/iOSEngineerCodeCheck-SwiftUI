@@ -15,6 +15,7 @@ final class SearchViewModel : ObservableObject {
     @Published var currentPage : Int = 1
     @Published var reachLast = false
     
+    
     var timer : Timer?
     
     //MARK: - functions
