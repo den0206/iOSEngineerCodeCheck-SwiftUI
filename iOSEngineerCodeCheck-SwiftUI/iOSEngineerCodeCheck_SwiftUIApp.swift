@@ -11,7 +11,8 @@ import SwiftUI
 struct iOSEngineerCodeCheck_SwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            /// root
+           SearchView()
         }
     }
 }

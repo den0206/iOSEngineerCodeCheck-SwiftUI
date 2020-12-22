@@ -11,6 +11,8 @@
 		3A71793D2591FE8A0018668C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71793C2591FE8A0018668C /* ContentView.swift */; };
 		3A71793F2591FE8B0018668C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A71793E2591FE8B0018668C /* Assets.xcassets */; };
 		3A7179422591FE8B0018668C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A7179412591FE8B0018668C /* Preview Assets.xcassets */; };
+		3A71794F2591FF840018668C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71794E2591FF840018668C /* SearchView.swift */; };
+		3A717952259200690018668C /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A717951259200690018668C /* SearchViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		3A71793E2591FE8B0018668C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A7179412591FE8B0018668C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3A7179432591FE8B0018668C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A71794E2591FF840018668C /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		3A717951259200690018668C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,9 @@
 			isa = PBXGroup;
 			children = (
 				3A71793A2591FE8A0018668C /* iOSEngineerCodeCheck_SwiftUIApp.swift */,
+				3A71794C2591FF100018668C /* Model */,
+				3A71794D2591FF170018668C /* ViewModel */,
+				3A71794A2591FF050018668C /* View */,
 				3A71793C2591FE8A0018668C /* ContentView.swift */,
 				3A71793E2591FE8B0018668C /* Assets.xcassets */,
 				3A7179432591FE8B0018668C /* Info.plist */,
@@ -67,6 +74,29 @@
 				3A7179412591FE8B0018668C /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3A71794A2591FF050018668C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3A71794E2591FF840018668C /* SearchView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3A71794C2591FF100018668C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3A71794D2591FF170018668C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3A717951259200690018668C /* SearchViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +169,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A71793D2591FE8A0018668C /* ContentView.swift in Sources */,
+				3A71794F2591FF840018668C /* SearchView.swift in Sources */,
+				3A717952259200690018668C /* SearchViewModel.swift in Sources */,
 				3A71793B2591FE8A0018668C /* iOSEngineerCodeCheck_SwiftUIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
