@@ -18,13 +18,17 @@ struct DetailView: View {
         VStack(spacing :10) {
             WebImage(url: URL(string: repo.owner.avatarURL))
                 .resizable()
+                .placeholder {
+                    ProgressView()
+                        
+                }
                 .scaledToFit()
                 .frame( height: 300)
-
+            
             Text("\(repo.owner.login) / \(repo.name)")
                 .font(.title)
                 .padding(.vertical,10)
-
+            
             HStack {
                 VStack(alignment: .leading){
                     Text( "Written in \(repo.language ?? "")")

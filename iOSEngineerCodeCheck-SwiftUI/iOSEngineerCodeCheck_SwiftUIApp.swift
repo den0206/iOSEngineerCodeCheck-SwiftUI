@@ -13,6 +13,7 @@ struct iOSEngineerCodeCheck_SwiftUIApp: App {
         WindowGroup {
             /// Root
            SearchView()
+            .preferredColorScheme(.light)
         }
     }
 }

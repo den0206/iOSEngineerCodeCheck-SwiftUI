@@ -16,6 +16,7 @@ final class SearchViewModel : ObservableObject {
     @Published var currentPage : Int = 1
     @Published var reachLast = false
     
+    @Published var loading = false
     @Published var showAlert = false
     @Published var alert : Alert = Alert(title: Text(""))
     
@@ -30,6 +31,7 @@ final class SearchViewModel : ObservableObject {
         repositries = [Repositry]()
         reachLast = false
         currentPage = 1
+        loading = false
     }
     
     func sendRequest() {
@@ -41,7 +43,7 @@ final class SearchViewModel : ObservableObject {
         }
         
         resetSearch()
-      
+      print(searchWord,currentPage)
         timer?.invalidate()
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             
@@ -51,6 +53,8 @@ final class SearchViewModel : ObservableObject {
     
     
     func searchRepositry() {
+        
+        loading = true
         
         let baseUrl = "https://api.github.com/search/repositories?q=\(searchWord)&page=\(currentPage)&per_page=20"
         
@@ -84,21 +88,19 @@ final class SearchViewModel : ObservableObject {
                     DispatchQueue.main.async {
                         
                         self.repositries.append(contentsOf: decorderData.items!)
-                        self.timer?.invalidate()
-                        
+                        self.loading = false
                         print(self.repositries.count)
                     }
                     
                 } else {
                     DispatchQueue.main.async {
-                        self.timer?.invalidate()
+                        self.loading = false
                         self.reachLast = true
                     }
                 }
                 
             } catch {
-                self.timer?.invalidate()
-                print(error.localizedDescription)
+                self.errorAlert(message: error.localizedDescription)
             }
             
         }
@@ -108,6 +110,7 @@ final class SearchViewModel : ObservableObject {
     //MARK: - Configure Error Alert
     private func errorAlert(message : String) {
         
+        loading = false
         self.showAlert = true
         self.alert = Alert(title:Text("ERROR"), message: Text(message), dismissButton: .cancel(Text("OK")))
     }
