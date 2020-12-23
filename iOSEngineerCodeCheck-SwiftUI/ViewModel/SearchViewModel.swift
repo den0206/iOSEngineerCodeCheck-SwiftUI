@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class SearchViewModel : ObservableObject {
     
@@ -14,6 +15,9 @@ final class SearchViewModel : ObservableObject {
     @Published var repositries = [Repositry]()
     @Published var currentPage : Int = 1
     @Published var reachLast = false
+    
+    @Published var showAlert = false
+    @Published var alert : Alert = Alert(title: Text(""))
     
     
     var timer : Timer?
@@ -30,8 +34,14 @@ final class SearchViewModel : ObservableObject {
     
     func sendRequest() {
         
-       resetSearch()
+        guard Reachabilty.HasConnection() else {
+            self.searchWord = ""
+            errorAlert(message: "No Internet Connection")
+            return
+        }
         
+        resetSearch()
+      
         timer?.invalidate()
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             
@@ -44,18 +54,25 @@ final class SearchViewModel : ObservableObject {
         
         let baseUrl = "https://api.github.com/search/repositories?q=\(searchWord)&page=\(currentPage)&per_page=20"
         
-        guard let url = URL(string: baseUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {return}
+        guard let url = URL(string: baseUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
+            errorAlert(message: "No URL")
+            return
+            
+        }
         
         let session = URLSession(configuration: .default)
         
         let task = session.dataTask(with: url) { (data, _, error) in
             
             if error != nil {
-                print(error!.localizedDescription)
+                self.errorAlert(message: error!.localizedDescription)
                 return
             }
             
-            guard let safeData = data else {return}
+            guard let safeData = data else {
+                self.errorAlert(message: "Can't func Data")
+                return
+            }
             
             let decorder = JSONDecoder()
             
@@ -67,23 +84,32 @@ final class SearchViewModel : ObservableObject {
                     DispatchQueue.main.async {
                         
                         self.repositries.append(contentsOf: decorderData.items!)
+                        self.timer?.invalidate()
                         
                         print(self.repositries.count)
                     }
                     
                 } else {
                     DispatchQueue.main.async {
+                        self.timer?.invalidate()
                         self.reachLast = true
                     }
                 }
                 
             } catch {
-                
+                self.timer?.invalidate()
                 print(error.localizedDescription)
             }
             
         }
         task.resume()
+    }
+    
+    //MARK: - Configure Error Alert
+    private func errorAlert(message : String) {
+        
+        self.showAlert = true
+        self.alert = Alert(title:Text("ERROR"), message: Text(message), dismissButton: .cancel(Text("OK")))
     }
     
     //MARK: - Pagination

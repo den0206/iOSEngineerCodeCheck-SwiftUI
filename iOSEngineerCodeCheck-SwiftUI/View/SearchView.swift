@@ -31,6 +31,9 @@ struct SearchView: View {
                                 vm.resetSearch()
                             }
                         })
+                        .alert(isPresented: $vm.showAlert, content: {
+                            vm.alert
+                        })
                     
                     /// Search Result
 
@@ -64,8 +67,7 @@ struct SearchView: View {
                 }
                 .padding(.horizontal,12)
             }
-         
-            
+      
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
         }
