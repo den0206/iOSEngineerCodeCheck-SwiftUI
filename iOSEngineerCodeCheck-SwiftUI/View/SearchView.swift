@@ -24,12 +24,16 @@ struct SearchView: View {
                         .autocapitalization(.none)
                         .padding(.top,7)
                         .onChange(of: vm.searchWord, perform: { _ in
-                            /// Call API
-                            vm.sendRequest()
-                            
+                
                             if vm.searchWord == "" {
                                 vm.resetSearch()
+                            } else {
+                                /// Call API
+                                vm.sendRequest()
                             }
+                        })
+                        .alert(isPresented: $vm.showAlert, content: {
+                            vm.alert
                         })
                     
                     /// Search Result
@@ -62,13 +66,12 @@ struct SearchView: View {
                     }
                 
                 }
-                .padding(.horizontal,12)
             }
-         
-            
+      
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .Loading(isShowing: $vm.loading)
        
         
     }
@@ -89,7 +92,10 @@ struct RepositryCell : View  {
             
             Spacer()
             Divider()
-        }.frame(height: 60)
+        }
+        .frame(height: 60)
+        .padding(.horizontal,12)
+
     }
 }
 
@@ -157,6 +163,6 @@ struct SearchBar : View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchBar(searchText: .constant(""))
     }
 }
