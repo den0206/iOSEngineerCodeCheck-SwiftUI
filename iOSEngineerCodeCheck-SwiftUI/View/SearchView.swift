@@ -43,33 +43,63 @@ struct SearchView: View {
                     case 0 :
                         Text("検索結果がありません").frame(width: geo.size.width, height: geo.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                     default:
-                        LazyVStack {
-                            ForEach(0 ..< vm.repositries.count, id : \.self) { i in
-                                
-                                NavigationLink(
-                                    destination: DetailView(repo: vm.repositries[i]),
-                                    label: {
-                                        
-                                        /// Repositry Cell
-                                        if i != self.vm.repositries.count - 1 {
-                                            RepositryCell(repo: vm.repositries[i])
-                                        } else {
-                                            RepositryCell(repo: vm.repositries[i])
-                                                .onAppear {
-                                                    /// pagination
-                                                    vm.readMore()
-                                                }
-                                        }
-                                    })
+                        
+                        ScrollViewReader { reader in
+                            LazyVStack {
+                                ForEach(0 ..< vm.repositries.count, id : \.self) { i in
+                                    
+                                    NavigationLink(
+                                        destination: DetailView(repo: vm.repositries[i]),
+                                        label: {
+                                            
+                                            /// Repositry Cell
+                                            if i != self.vm.repositries.count - 1 {
+                                                RepositryCell(repo: vm.repositries[i])
+                                            } else {
+                                                RepositryCell(repo: vm.repositries[i])
+                                                    .onAppear {
+                                                        /// pagination
+                                                        vm.readMore()
+                                                    }
+                                            }
+                                        })
+                                }
                             }
+                            .onReceive(vm.$scrollTo, perform: { action in
+                                guard !vm.repositries.isEmpty else {return}
+                                withAnimation {
+                                    switch action {
+                                    case .top :
+                                        reader.scrollTo(0, anchor: .top)
+                                    case .none:
+                                        return
+                                    }
+                                }
+                               
+                            })
+                            
                         }
+                        
                     }
-                
+                    
                 }
             }
-      
+            
+       
             .navigationBarTitle("Search Repositry")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing:
+                Button(action: {vm.scrollTo = .top}, label: {
+                    VStack(spacing :4) {
+                        Text("Top").font(.caption2)
+                        Image(systemName: "arrow.up.to.line")
+                       
+                    }
+                    .foregroundColor(.black)
+                    .opacity(vm.showScrollButton ? 1 : 0)
+                    
+                })
+            )
         }
         .Loading(isShowing: $vm.loading)
        

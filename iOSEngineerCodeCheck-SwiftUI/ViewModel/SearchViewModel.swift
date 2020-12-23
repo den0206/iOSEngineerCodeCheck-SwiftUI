@@ -10,18 +10,27 @@ import SwiftUI
 
 final class SearchViewModel : ObservableObject {
     
+    enum Direction {
+        case top
+    }
+
     @Published var searchWord : String = ""
     
     @Published var repositries = [Repositry]()
     @Published var currentPage : Int = 1
     @Published var reachLast = false
     
+    @Published var scrollTo: Direction? = nil
     @Published var loading = false
     @Published var showAlert = false
     @Published var alert : Alert = Alert(title: Text(""))
     
     
     var timer : Timer?
+    
+    var showScrollButton : Bool {
+        return !repositries.isEmpty
+    }
     
     //MARK: - functions
 
@@ -43,7 +52,7 @@ final class SearchViewModel : ObservableObject {
         }
         
         resetSearch()
-      print(searchWord,currentPage)
+        
         timer?.invalidate()
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             
